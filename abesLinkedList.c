@@ -10,6 +10,8 @@ typedef struct node Node;
 Node *head;
 Node *tail;
 
+void insert(int);
+int fetch(int);
 int main(int argc, char *argv[]) {
 	int choice;
 	int value;
@@ -23,13 +25,14 @@ int main(int argc, char *argv[]) {
 			case 1:
 				printf("\nEnter the value you want to insert!\n");
 				scanf("%d", &value);
-				//need to actually insert the value
+				insert(value);
 				printf("\nInserted the value %d into linkedList\n", value); 
 				break;
 			case 2:
 				printf("\nValue at what index you want to fetch\n");
 				scanf("%d", &index);
-				printf("\nValue at index %d is 10\n", index); //need to fetch real value
+				value = fetch(index);
+				printf("\nValue at index %d is %d\n", index, value); //need to fetch real value
 				break;
 			case 3:
 				printf("\nExiting...\n");
@@ -38,4 +41,43 @@ int main(int argc, char *argv[]) {
 				break;
 		}
 	}
+}
+
+
+void insert(int value) {
+	
+	Node newNode;
+	newNode.value = value;
+	
+	if(head == NULL) {
+		//this means list is empty
+		head = &newNode;
+		tail = &newNode;
+	} else {
+		//list is not empty
+		//tail is pointer to last node
+		//(*tail) is last node itself
+		(*tail).next = &newNode;
+		
+		//now newNode is the last node and tail should always store pointer to last node.
+		tail = &newNode;
+	}
+}
+
+int fetch(int index) {
+	if(head == NULL) {
+		return -1;
+	}
+	
+	Node element = *head;
+	for (int i = 0; i < index; i++) {
+		if(element.next == NULL) {
+			return -1;
+		}
+		//element.next is pointer to some Node. So *(element.next) will be a Node
+		element = *(element.next);
+	}
+	
+	return element.value;
+	
 }
